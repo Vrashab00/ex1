@@ -10,7 +10,11 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+// Safe fallback client if environment variables are not yet configured
+const clientUrl = supabaseUrl || 'https://placeholder.supabase.co';
+const clientKey = supabaseAnonKey || 'placeholder-anon-key';
+
+export const supabase = createClient(clientUrl, clientKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,

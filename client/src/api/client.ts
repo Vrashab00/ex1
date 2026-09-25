@@ -1,10 +1,20 @@
 import { InstanceTelemetry, AuditResponse, AuditLogEntry, RejectionFeedback, AppSettings } from '../types/index.js';
 
-// Resolve API Base URL depending on execution environment (Vite proxy vs Live Server on 5500 vs Vercel/production)
-const isLocalhost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-const API_BASE = isLocalhost
-  ? (window.location.port === '5173' ? '/api' : 'http://localhost:3001/api')
-  : (import.meta.env.VITE_API_URL || '/api');
+// Resolve API Base URL depending on execution environment (VITE_API_URL vs local Vite proxy vs Live Server)
+function resolveApiBase(): string {
+  const envUrl = (import.meta.env.VITE_API_URL || '').trim();
+  if (envUrl) {
+    const cleanUrl = envUrl.replace(/\/+$/, '');
+    return cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`;
+  }
+  const isLocalhost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  if (isLocalhost) {
+    return window.location.port === '5173' ? '/api' : 'http://localhost:3001/api';
+  }
+  return '/api';
+}
+
+const API_BASE = resolveApiBase();
 
 // Fallback in-browser data for Live Server mode (when backend is not running or on different port)
 const LOCAL_FALLBACK_INSTANCES: InstanceTelemetry[] = [
