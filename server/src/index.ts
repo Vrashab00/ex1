@@ -40,8 +40,8 @@ app.use('/api/demo', demoRouter);
 app.use('/api/chat', chatRouter);
 
 // Start server
-app.listen(config.port, async () => {
-  console.log(`🚀 FinOps AI server running on http://localhost:${config.port}`);
+app.listen(config.port, '0.0.0.0', async () => {
+  console.log(`🚀 FinOps AI server running on port ${config.port} (0.0.0.0)`);
   console.log(`🤖 AI Provider mode: ${config.aiProvider}`);
   
   // Seed initial audit in background
@@ -53,3 +53,6 @@ app.listen(config.port, async () => {
     console.error('⚠️ Initial audit initialization warning:', err.message);
   }
 });
+
+export default app;
+
