@@ -1,0 +1,31 @@
+{
+  "name": "cloudprune-ai",
+  "version": "1.0.0",
+  "description": "CloudPrune AI — Autonomous FinOps Agent Dashboard for Cloud Waste Remediation",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"blue,cyan\" \"npm run dev:server\" \"npm run dev:client\"",
+    "build": "cd server && npm run build && cd ../client && npm run build && cd .. && node scripts/sync-dist.js",
+    "sync": "node scripts/sync-dist.js",
+    "start": "cd server && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "keywords": [
+    "finops",
+    "cloud-waste",
+    "aws",
+    "gcp",
+    "agent",
+    "ai",
+    "gemini",
+    "cost-optimization"
+  ],
+  "author": "",
+  "license": "MIT"
+}
